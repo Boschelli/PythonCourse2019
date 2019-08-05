@@ -4,6 +4,20 @@
 
 ## Write a for loop, while loop, or function (or all three!) to create a
 ## list of the first 10 numbers of the fibonacci sequence
+fib=[]
+for i in range(0,10):
+    if (i==0):
+        fib[i]=1
+    if (i==1):
+        fib[i]=1
+    else:
+        fib[i]=fib[i-1]+fib[i-2]
+print (fib)
+
+
+
+
+
 
 
 
@@ -11,6 +25,11 @@
 
 """return true if there is no e in 'word', else false"""
 def has_no_e(word):
+    for i in word:
+        if i == 'e':
+            return False
+    return True
+
 
 
 """return true if there is e in 'word', else false"""

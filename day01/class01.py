@@ -2,12 +2,12 @@
 
 ## Strings ------------------------------------------------
 
-s1 = "hi my name is ryden" ## double quotes
+s1 = "hi my name is ryden"  # double quotes
 
-s2 = 'how are you?' ## single quotes
+s2 = 'how are you?'  # single quotes
 
 s3 = """ a string can even span
-multiple lines""" ## triple quotes
+multiple lines"""  ## triple quotes
 
 name = "ryden"
 age = "26"
@@ -40,14 +40,13 @@ print("\n".join(letters_list))
 ## Indexing is flexible in python
 ## What's happening here?
 num_string = "0123456789"
-print(num_string[2:]) ## index 2 through end
-print(num_string[-2:]) ## index -2 through end
-print(num_string[:2]) ## up to index 2
-print(num_string[:-2]) ## up to index -2
-print(num_string[::2]) ## sequence, every other
-print(num_string[::-2]) ## sequence, every other from the end
-print(num_string[::3]) ## sequence, every third from beginning
-
+print(num_string[2:])  ## index 2 through end
+print(num_string[-2:])  ## index -2 through end
+print(num_string[:2])  ## up to index 2
+print(num_string[:-2])  ## up to index -2
+print(num_string[::2])  ## sequence, every other
+print(num_string[::-2])  ## sequence, every other from the end
+print(num_string[::3])  ## sequence, every third from beginning
 
 ## Integers ------------------------------------------------
 
@@ -55,12 +54,12 @@ print(num_string[::3]) ## sequence, every third from beginning
 print(5 + 2)
 print(5 - 2)
 print(5 * 2)
-print(5 ** 2) 
-print(5 / 2) ## in python2, this is floor division
+print(5 ** 2)
+print(5 / 2)  ## in python2, this is floor division
 print(5 // 2)
 
-whole = 5//3
-remainder = 5%3
+whole = 5 // 3
+remainder = 5 % 3
 "Five divded by three is %d and %d fifths" % (whole, remainder)
 
 ## assignment is flexible
@@ -74,18 +73,15 @@ print(five)
 five *= 2
 print(five)
 
-
 ## Floats ------------------------------------------------
 
 ## Real numbers
 ## Add decimal to integer
 ## Be careful with the distinction here!
 
-print(12//5)
-print(12.0/5)
-print(float(12)/5)
-
-
+print(12 // 5)
+print(12.0 / 5)
+print(float(12) / 5)
 
 ## Lists ------------------------------------------------
 
@@ -93,19 +89,19 @@ print(float(12)/5)
 ## Lists will probably be your goto storage in Python, like vectors in R
 
 cohort = ["Oswald", "Jordan"]
-cohort.append("Ryan") ## add one element
+cohort.append("Ryan")  ## add one element
 print(cohort)
 
-cohort.extend(["Ben", "Crystal"]) ## add a list
+cohort.extend(["Ben", "Crystal"])  ## add a list
 print(cohort)
 
 ## NOT like this...
-#cohort = cohort.append()
+# cohort = cohort.append()
 
 ## remember our indexing... starts at 0!!
-print(cohort[0]) ## first
-print(cohort[-1]) ## last
-print(cohort[len(cohort)]) ## !!!
+print(cohort[0])  ## first
+print(cohort[-1])  ## last
+print(cohort[len(cohort)])  ## !!!
 
 ## lists are mutable
 cohort[0] = "Alexandra"
@@ -126,21 +122,17 @@ print(cohort)
 list_of_lists = [cohort, ["JB", "Ryden", "David", "Erin"]]
 print(list_of_lists)
 
-
-
 ## Tuples ------------------------------------------------
 
 ## Like lists, but immutable
 ## Not super common....
 
-tup = (1,6,5, "Apple", ["python", "R"])
+tup = (1, 6, 5, "Apple", ["python", "R"])
 print(tup[1])
 
-tup[1] = 10000 ## !!!
+tup[1] = 10000  ## !!!
 
-tup.append(10000) ## !!!
-
-
+tup.append(10000)  ## !!!
 
 ## Dictionary ------------------------------------------------
 
@@ -151,20 +143,16 @@ tup.append(10000) ## !!!
 ## 
 ## Dictionaries are super useful!
 
-ryden_info = {"name" : "Ryden", "age" : 26, "research" : ["social media", "methods"]}
+ryden_info = {"name": "Ryden", "age": 26, "research": ["social media", "methods"]}
 
 print(ryden_info.keys())
 print(ryden_info.values())
 
-ryden_info[0] ##!!!
+ryden_info[0]  ##!!!
 ryden_info["research"]
 
 ryden_info["last_name"] = "Butler"
 print(ryden_info)
-
-
-
-
 
 ## Booleans and Conditionals ------------------------------------------------
 
@@ -173,51 +161,44 @@ f = False
 print(t == f)
 print(t != f)
 
-
-## Perform operation(s) if condition is met 
+## Perform operation(s) if condition is met
 x = 2
 if x == 1:
-	print("x is one")
+    print("x is one")
 elif x == 2:
-	print("x is two")
+    print("x is two")
 else:
-	print("x is neither one or two")
+    print("x is neither one or two")
 
 if x == 2 or x == 3:
-	print("Yay!")
+    print("Yay!")
 
 if x == 2 and x < 5:
-	print("Yay!")
+    print("Yay!")
 
 ## Note: indentation matters in python, but ipython can help
 x = 2
 if x == 1:
-          print("x is one")
-
-
-
-
+    print("x is one")
 
 ## Loops ------------------------------------------------
 
 even_nums = []
-for i in range(1,10):
-	if i%2 == 0:
-		even_nums.append(i)
+for i in range(1, 10):
+    if i % 2 == 0:
+        even_nums.append(i)
 
 hi = []
 for i in "hello":
-	hi.append(i)
+    hi.append(i)
 
 ## more succinct way to write simple loop
 bye = [i for i in "goodbye"]
 
-
 while len(even_nums) > 1:
-	print(even_nums.pop())
+    print(even_nums.pop())
 
 print(even_nums)
-
 
 
 ## Functions ------------------------------------------------
@@ -228,10 +209,8 @@ print(even_nums)
 
 ## Input, output
 def add_squares(x, y):
-	return x**2 + y**2
-
-print(add_squares(3,4))
-print(add_squares(2,2))
+    return x ** 2 + y ** 2
 
 
-
+print(add_squares(3, 4))
+print(add_squares(2, 2))
