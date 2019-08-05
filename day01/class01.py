@@ -140,7 +140,7 @@ tup.append(10000)  ## !!!
 ## - elements not ordered
 ## - elements are named with keys
 ## Therefore, you have to index with key names
-## 
+##
 ## Dictionaries are super useful!
 
 ryden_info = {"name": "Ryden", "age": 26, "research": ["social media", "methods"]}
