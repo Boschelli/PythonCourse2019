@@ -2,88 +2,133 @@
 ## http://www.purplemath.com/modules/base_why.htm
 
 """convert positive integer to base 2"""
-##Needs To Be Reversed
+
 def binarify(num):
+    # Unnecessary variable assignment
     q=num
+    # Creates results
     result=""
+    # Creates flipped results
     result2=""
+    # Loops until residual is less than 1
     while(q>=1):
+        # Adds modulo to result string
         result+=str(q%2)
+        # Divides number by 2
         q=int(q/2)
+    #Flips results
     for i in result:
         result2= i + result2
     return (result2)
 
+# Function test
 binarify(5)
 
 """convert positive integer to a string in any base"""
-##Needs To Be Reversed
+
 def int_to_base(num, base):
+    # Unnecessary variable assignment
     q=num
+    # Creates results
     result=""
+    # Creates flipped results
     result2=""
+    # Loops until residual is less than 1
     while(q>=1):
+        # Adds modulo to result string
         result+=str(q%base)
+        # Divides number by desired base
         q=int(q/base)
+    # Flips results
     for i in result:
         result2= i + result2
     return (result2)
+
+# Function test
 int_to_base(5,2)
 
 """take a string-formatted number and its base and return the base-10 integer"""
 ##Required Flipped Formatted Strings
 def base_to_int(string, base):
+    # Creates results
     result=0
+    # Sets exponent and adjusts for zero-th power
     k=len(string)-1
+    # Loops through characters and multiplies them against exponent
     for i in string:
         result+=(int(i)*(base**k))
+        # Decreases exponent
         k-=1
     return result
+
+#Function Test
 base_to_int("10",2)
 
 
 """add two numbers of different bases and return the sum"""
 def flexibase_add(str1, str2, base1, base2):
+    # Converts first number to base 10
     num1=base_to_int(str1,int(base1))
+    # Converts second number to base 10
     num2=base_to_int(str2,int(base2))
+    # Returns sum
     return(num1+num2)
+
+#Function Test
 flexibase_add('101','1111','2','2')
 
 """multiply two numbers of different bases and return the product"""
 def flexibase_multiply(str1, str2, base1, base2):
+    # Converts first number to base 10
     num1=base_to_int(str1,int(base1))
+    # Converts second number to base 10
     num2=base_to_int(str2,int(base2))
+    # Returns sum
     return(num1*num2)
+
+#Function Test
 flexibase_multiply('10','1111','10','2')
 
 
 """given an integer, return the Roman numeral version"""
 def romanify(num):
+    # Redundent variable assignment
     q=num
+    # Initiates result string
     result=""
+    # Checks if divisable by 1000
     while(q/1000>=1):
+        # Adds Roman Numeral
         result+="M"
+        # Reduce number by 1000
         q=q-1000
+    # See comments above
     while(q/500>=1):
         result+="D"
         q=q-500
+    # See comments above
     while(q/100>=1):
         result+="C"
         q=q-100
+    # See comments above
     while(q/50>=1):
         result+="L"
         q=q-50
+    # See comments above
     while(q/10>=1):
         result+="X"
         q=q-10
+    # See comments above
     while(q/5>=1):
         result+="V"
         q=q-5
+    # See comments above
     while(q/1>=1):
         result+="I"
         q=q-1
     return result
 
+# Function test
 romanify(5990)
 
 
