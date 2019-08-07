@@ -92,44 +92,53 @@ flexibase_multiply('10','1111','10','2')
 
 """given an integer, return the Roman numeral version"""
 def romanify(num):
-    # Redundent variable assignment
-    q=num
     # Initiates result string
     result=""
-    # Checks if divisable by 1000
-    while(q/1000>=1):
-        # Adds Roman Numeral
-        result+="M"
-        # Reduce number by 1000
-        q=q-1000
-    # See comments above
-    while(q/500>=1):
-        result+="D"
-        q=q-500
-    # See comments above
-    while(q/100>=1):
-        result+="C"
-        q=q-100
-    # See comments above
-    while(q/50>=1):
-        result+="L"
-        q=q-50
-    # See comments above
-    while(q/10>=1):
-        result+="X"
-        q=q-10
-    # See comments above
-    while(q/5>=1):
-        result+="V"
-        q=q-5
-    # See comments above
-    while(q/1>=1):
-        result+="I"
-        q=q-1
+    # The number of times each numeral goes into a number
+    m=0
+
+    # Finds the max number of times 1000 goes into the number
+    m=num//1000
+    # Subtracts the maximum number of times
+    num-=(1000*m)
+    # Adds the appropriate number of Roman Numerals
+    result+=("M"*m)
+
+    # See Comments for 1000
+    m=num//500
+    num-=(500*m)
+    result+=("D"*m)
+
+    # See Comments for 1000
+    m=num//100
+    num-=(100*m)
+    result+=("C"*m)
+
+    # See Comments for 1000
+    m=num//50
+    num-=(50*m)
+    result+=("L"*m)
+
+    # See Comments for 1000
+    m=num//10
+    num-=(10*m)
+    result+=("X"*m)
+
+    # See Comments for 1000
+    m=num//5
+    num-=(5*m)
+    result+=("V"*m)
+
+    # See Comments for 1000
+    m=num//1
+    num-=(1*m)
+    result+=("I"*m)
+
+    # Returns results
     return result
 
 # Function test
-romanify(5990)
+romanify(1234567)
 
 
 # Copyright (c) 2014 Matt Dickenson
