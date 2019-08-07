@@ -88,7 +88,7 @@ you.latin_name
 ## Now require class instantiation to take more info
 class Human:
 	latin_name = 'homo sapien'
-  ## __init__ is one of several special built-in functions that Python uses 
+  ## __init__ is one of several special built-in functions that Python uses
   ## 'self' refers to current instance of class
   ## need it as first arg so function can refer to other attributes and methods of the class!
 	def __init__(self, age, sex, name):
@@ -159,18 +159,18 @@ print(me)
 # - Add a student's name to the roster for a grade
 # - Get a list of all students enrolled in a grade
 # - Get a sorted list of all students in all grades.
-# 
+#
 # Note that all our students only have one name.
 
 class School():
     def __init__(self, school_name): #initialize instance of class School with parameter name
         self.school_name = school_name #user must put name, no default
         self.db = {} #initialize empty dictionary to store kids and grades
-        
+
     def add(self, name, student_grade): #add a kid to a grade in instance of School
         if student_grade in self.db: #need to check if the key for the grade already exists, otherwise assigning it will return error
             self.db[student_grade].append(name) #add kid to the set of kids within the dictionary
-        else: self.db[student_grade] = [name] #if the key doesn't exist, create it and have kid start new list 
+        else: self.db[student_grade] = [name] #if the key doesn't exist, create it and have kid start new list
 
     def sort(self): #sorts kids alphabetically and returns them in tuples (because they are immutable)
         sorted_students={} #sets up empty dictionary to store sorted tuples
@@ -238,7 +238,7 @@ class Parent():
 
 class Child():
   def __init__(self, firstname, parent):
-    self.parent = parent 
+    self.parent = parent
     self.lastname = parent.lastname
     self.firstname = firstname
 
@@ -256,7 +256,7 @@ class Child():
     for kid in self.parent.kids:
       if kid != self:
         print("I have a sibling named " + kid.name())
-        
+
 
 
 mom = Parent("Female", "Jane", "Smith")
@@ -277,12 +277,12 @@ jack.siblings()
 
 ## "parent" or general class
 class Animal:
-    
+
     living = "Yes!" ## attribute of all Animal objects
 
     def __init__(self, name): # Constructor of the class
         self.name = name
-      
+
     def talk(self): # Abstract method, defined by convention only
         raise NotImplementedError("Subclass must implement abstract method")
 
@@ -293,7 +293,7 @@ class Animal:
 ## "children" or specific classes
 class Cat(Animal):
     def talk(self):
-        return self.meow() 
+        return self.meow()
     def meow(self):
         return 'Meow!'
 
@@ -303,7 +303,7 @@ class Dog(Animal):
     def bark(self):
         return 'Woof! Woof!'
 
-class Fish(Animal):  
+class Fish(Animal):
     def bubbles(self):
         return 'blubblub'
     def furry(self):
@@ -336,7 +336,7 @@ class Burger():
         self.size = size
         self.toppings = self.toppings_allowed(toppings_ordered)
         self.containter = container
-    
+
     def toppings_allowed(self, attempted_toppings):
         allowed_toppings = ["cheese", "tomato", "onion", "lettuce", "bacon"]
         toppings=[]
@@ -344,10 +344,10 @@ class Burger():
             if topping in allowed_toppings:
                 toppings.append(topping)
         return toppings
-            
+
     def __str__(self):
         return "I'm a %s %s burger" % (self.doneness,self.filling)
-    
+
     def tastiness(self):
         if "cheese" in self.toppings:
             return "VERY GOOD"
@@ -355,7 +355,7 @@ class Burger():
             return "yuck!"
         else:
             return "meh"
-        
+
     def cook(self):
         time_for_doneness = 0
         if self.doneness == "raw":
@@ -370,13 +370,13 @@ class Burger():
             return "UNKNOWN"
 
         return self.size * 4 * time_for_doneness
-        
+
 
 class VeggieBurger(Burger):
     def __init__(self, toppings_ordered, container):
       ## when initializing, you're calling burger initialization
       ## but using presets for some arguments
-      ## subclass only needs the 2 arguments 
+      ## subclass only needs the 2 arguments
         Burger.__init__(self,"veggie patty", "medium", 0.25, toppings_ordered, container)
 
     ## burger uses this version of toppings allowed...
@@ -390,7 +390,7 @@ class VeggieBurger(Burger):
 
     def cooking_time(self):
         return 6
-        
+
 
 rare_burger = Burger("beef","rare",0.25,["cheese"],"bread")
 veggie_burger = VeggieBurger(["tomato","onion","bacon"],"bread")
@@ -424,16 +424,31 @@ class Senator():
   def vote(self, bill, choice):
     #update the bill object--add the senator's name to the the list of yes/no/abstain
     #update the senator object--add this bill to the bills this senator has voted on
-    #print an informative message announcing the vote 
+    #print an informative message announcing the vote
+
+    # Checks how the Senator voted and adds to bill's votes
+    if choice == 'yes':
+        bill.votes["yes"].append(self.name)
+    elif choice == 'no':
+        bill.votes["no"].append(self.name)
+    elif choice == 'abstain':
+        bill.votes["abstain"].append(self.name)
+    # Adds bill to list of votes the Senator has voted on
+    self.bills_voted_on.append(bill)
+    return self.name+" has successfully voted "+choice+" on "+bill.title
 
 class Bill():
   def __init__(self, title):
     self.title = title
     self.votes = {"yes" : [], "no" : [], "abstain" : []}
-    self.passed = None
+    self.passed = False
 
   def result(self):
     ## update and return the "passed" variable to indicate True/False if the bill passed
+    if len(self.votes['yes']) > len(self.votes['no']):
+        self.passed =True
+        return self.title+" has successfully passed!"
+    return self.title+" has failed to pass."
 
 
 ## should be able to do these things
