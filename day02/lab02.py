@@ -43,14 +43,7 @@ class Clock:
     def adjust(self):
         # Variable to adjust both minutes and clocks
         m=0
-        # Checks if minutes overflow
-        if self.minutes > 59:
-            # Sets the number of times minutes overflow (go over 60)
-            m=self.minutes//60
-            # Adjusts minutes
-            self.minutes-=60*m
-            # Adjusts hours for excess minutes
-            self.hour+=m
+
         # Checks if minutes underflow
         if self.minutes < 0:
             # Sets number of times minutes underflow (go under 0 in units of 60)
@@ -61,6 +54,24 @@ class Clock:
             self.minutes=60+self.minutes
             # Adjusts hours for lost minutes
             self.hour-=1+m
+        # Checks if hours turn negative
+        if self.hour < 1:
+            # Finds number of times hours underflow (go under 0 in units of 60)
+            m = abs(self.hour)//12
+            # Adjusts hours for underflow
+            self.hour+=12*m
+            # Turns negative minutes into positive form
+            self.hour=12+self.hour
+
+        # Checks if minutes overflow
+        if self.minutes > 59:
+            # Sets the number of times minutes overflow (go over 60)
+            m=self.minutes//60
+            # Adjusts minutes
+            self.minutes-=60*m
+            # Adjusts hours for excess minutes
+            self.hour+=m
+
         # Checks if hours overflow (go over 12)
         if self.hour > 12:
             # Sets number of times hours overflow
@@ -68,8 +79,9 @@ class Clock:
             # Adjusts hours to fit in 12 hour range
             self.hour-=12*m
 
+
 # Tests class creation
-clocky_boi=Clock(12,0)
+clocky_boi=Clock(1,0)
 print(clocky_boi)
 
 # Tests minute addition
@@ -77,7 +89,7 @@ clocky_boi+30
 print(clocky_boi)
 
 # Tests minute subtraction
-clocky_boi-31
+clocky_boi-61
 print(clocky_boi)
 
 # Tests clock comparison
