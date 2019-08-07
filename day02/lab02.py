@@ -9,7 +9,15 @@ class Clock:
 
     ## Print the time
     def __str__(self):
-        return ("The time is %d minutes past %d" % (self.minutes,self.hour))
+        # Creates initial time string
+        time="%d:"%self.hour
+        # Adds zero infront of minutes less than 10
+        if self.minutes<10:
+            time+="0%d"%self.minutes
+        else:
+            time+="%d"%self.minutes
+        # Returns formatted time
+        return ("The time is %s"%time)
 
 
     ## Add time
