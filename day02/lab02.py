@@ -1,5 +1,6 @@
 ## Fill in the following methods for the class 'Clock'
 
+# 12-hour clock with minutes and hours
 class Clock:
     def __init__(self, hour, minutes):
         self.minutes = minutes
@@ -101,4 +102,4 @@ print(clocky_boi1 == clocky_boi2)
 
 # Checks if not-equal
 clocky_boi3= Clock(1,35)
-print(clocky_boi1 == clocky_boi3)
+print(clocky_boi1 != clocky_boi3)
