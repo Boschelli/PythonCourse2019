@@ -138,7 +138,7 @@ def romanify(num):
     return result
 
 # Function test
-romanify(1234567)
+romanify(12367)
 
 
 # Copyright (c) 2014 Matt Dickenson
