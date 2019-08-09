@@ -3,7 +3,7 @@
 
 ## Types of errors ------------------------------------------------
 
-## Syntax errors ## 
+## Syntax errors ##
 if x == 1:
     print("x equals 1")
 else:
@@ -25,7 +25,7 @@ print((10*2) + (5*3))
 
 
 ## Runtime errors ##
-print(a) 
+print(a)
 print(5//0)
 
 
@@ -75,7 +75,7 @@ def exception_func(x):
     except ZeroDivisionError:
         ans = None
     finally:
-        return ans 
+        return ans
 
 print(exception_func(1))
 print(exception_func(0))
@@ -135,7 +135,7 @@ def print_integer(integer):
         pass
     else:
         return "Here is my integer: " + str(integer)
-    
+
 
 print_integer(2)
 print_integer('22')
@@ -159,13 +159,13 @@ print_integer('banana')
 
 ## Note: you likely won't be raising errors as much as catching them
 def print_integer(integer):
-    if type(integer) == int: 
+    if type(integer) == int:
         return "Here is my integer: " + str(integer)
     else:
         raise TypeError("Enter an integer!")
 
 print_integer('22')
-        
+
 
 
 def print_integer(integer):
@@ -179,7 +179,7 @@ def print_integer(integer):
         raise TypeError("Enter a number!")
 
 print_integer('22')
-print_integer(1.2)        
+print_integer(1.2)
 
 
 
@@ -194,11 +194,11 @@ def print_integer(integer):
     except:
         print("Integers can't have decimals!")
 
-                
 
-        
-## Create your own exception      
-class CustomException(Exception): 
+
+
+## Create your own exception
+class CustomException(Exception):
   def __init__(self, value):
     self.value = value
   def __str__(self):
@@ -206,7 +206,7 @@ class CustomException(Exception):
 
 ## use
 raise CustomException(3)
-    
+
 
 ## Our custom exception is the integer cannot be 10, 20, or 30.
 ## Since this is a ValueError unique to our situation, we need to catch it ourselves.
@@ -233,10 +233,17 @@ def print_integer(integer):
 
 
 ## fix this!
-mylist = [1, 2, 3, 4.5, "6", "7.8", 8, 9, "done"]
-out = [mylist.pop(0)]
-for i in mylist:
-    out.append(out[-1] + i)
+test = [1, 2, 3, 4.5, "6", "7.8", 8, 9, "done"]
+test=[1,2,3,4,5,6,7.8,8,9]
+out = [test.pop(0)]
+for i in test:
+    try:
+        out.append(out[-1] + i)
+    except TypeError:
+        print("Can't Add All Items In List")
+        break
+    print(out)
+out
 
 
 
@@ -267,7 +274,7 @@ for n in range(2, 30):
     for x in range(2, n):
         if n % x == 0:
             print("%d equals %d * %d" % (n, x, n / x))
-            continue
+            break
     else:
         print("%d is a prime number" % n)
 
@@ -275,13 +282,3 @@ for n in range(2, 30):
 ## We have 2 semantic errors:
 ## Printing message for non-prime numbers
 ## Printing it several times!
-
-
-
-
-
-
-
-
-
-

@@ -176,7 +176,6 @@ portfollio.sellMutualFund(1,mf_GHT)
 portfollio.items
 # Printing Portfollio
 print(portfollio)
-portfollio.cash
 
 # Portfollio History
 portfollio.history()
