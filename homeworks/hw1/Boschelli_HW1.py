@@ -12,6 +12,7 @@ class Portfollio():
 
     ## Add/Withdraw Methods For Cash: ##
 
+    # cash: amount of money (float)
     def addCash(self,cash):
         # Adds new cash amount to account total
         # Truncates cash amount to avoind rounding exploit
@@ -22,6 +23,7 @@ class Portfollio():
         # Adds deposit to account log
         self.log.append(temp)
 
+    # cash: amount of money (float)
     def withdrawCash(self,cash):
         # Temporary variable to calculate cash delta
         # Cash is rounded to nearest whole cent
@@ -40,6 +42,9 @@ class Portfollio():
 
     ## Default item buy/sell methods: ##
 
+    # quantity: The number of items (int or float)
+    # item: the financial item (Financialitem)
+    # itemType: the type of financial item (string)
     def defaultBuy(self,quantity,item,itemType):
         # Checks if quantity is appropriate for item type
         item.quanityCheck(quantity)
@@ -59,6 +64,9 @@ class Portfollio():
         # Adds purchase to account log
         self.log.append(temp)
 
+    # quantity: The number of items (int or float)
+    # item: the financial item (Financialitem)
+    # itemType: the type of financial item (string)
     def defaultSell(self,quantity,item,itemType):
         # Checks if quantity is appropriate for item type
         item.quanityCheck(quantity)
@@ -86,17 +94,25 @@ class Portfollio():
 
     ## Buy/Sell methods for Stocks: ##
 
+    # quantity: The number of items (int)
+    # stock: a stock variable
     def buyStock(self,quantity,stock):
         self.defaultBuy(quantity,stock,"Stock")
 
+    # quantity: The number of items (int)
+    # stock: a stock variable
     def sellStock(self,quantity,stock):
         self.defaultSell(quantity,stock,"Stock")
 
     ## Buy/Sell methods for Mutual Funds ##
 
+    # quantity: The number of items (float)
+    # mf: a MutualFund variable
     def buyMutualFund(self,quantity,mf):
         self.defaultBuy(quantity,mf,"MutualFund")
 
+    # quantity: The number of items (float)
+    # mf: a MutualFund variable
     def sellMutualFund(self,quantity,mf):
         self.defaultSell(quantity,mf,"MutualFund")
 
@@ -117,6 +133,8 @@ class Portfollio():
             print(i)
 
 class Financialitem():
+    # value: the buy value (float)
+    # symbol: the ticker name (string)
     def __init__(self,value, symbol):
 
         self.value=value
@@ -171,7 +189,7 @@ portfollio.buyMutualFund(2,mf_GHT)
 portfollio.sellMutualFund(7,mf_BRT)
 portfollio.sellMutualFund(1,mf_GHT)
 
-portfollio.items
+
 # Printing Portfollio
 print(portfollio)
 
