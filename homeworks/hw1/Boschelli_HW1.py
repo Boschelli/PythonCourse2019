@@ -1,6 +1,8 @@
 import random
 from sys import exit
 
+
+
 class Portfollio():
     def __init__(self, cash=0):
         # Initial cash for account
@@ -14,20 +16,28 @@ class Portfollio():
 
     def addCash(self,cash):
         # Adds new cash amount to account total
-        self.cash+=cash
+        # Truncates cash amount to avoind rounding exploit
+        self.cash+=int(cash*100)/100.0
+        # Temp string to announce deposit
+        temp="Added $%.2f To Account"%cash
+        print(temp)
         # Adds deposit to account log
-        self.log.append("Added $%d To Account"%cash)
+        self.log.append(temp)
 
     def withdrawCash(self,cash):
         # Temporary variable to calculate cash delta
-        tempAmount=self.cash-cash
+        # Cash is rounded to nearest whole cent
+        tempAmount=self.cash-round(cash,2)
         # Checks if account has sufficent funds for withdraw
         if tempAmount <0:
-            return "Error Insufficent Funds"
+            exit("Error Insufficent Funds")
         # Sets cash amount to withdrawn amount
         self.cash= tempAmount
+        # Temp string to announce withdrawl
+        temp="Withdrew $%.2f From Account"%cash
+        print(temp)
         # Adds withdraw to account log
-        self.log.append("Withdrew $%d From Account"%cash)
+        self.log.append(temp)
 
 
     ## Default item buy/sell methods: ##
@@ -37,7 +47,7 @@ class Portfollio():
         item.quanityCheck(quantity)
         # Checks if account has enough funds
         if self.cash<quantity*item.value:
-            return "Error Not Enough Funds"
+            exit("Error Not Enough Funds")
         # Checks if item already exists in account dictionary and adjusts number
         if item.symbol in self.items[itemType]:
             self.items[itemType][item.symbol]+=quantity
@@ -45,18 +55,21 @@ class Portfollio():
         else: self.items[itemType][item.symbol]=quantity
         # Subtracts cost of purchase
         self.cash-=quantity*item.value
+        # Temp string to announce sale
+        temp="Bought %s Shares Of %s For $%.2f"%(str(quantity),item.symbol,item.value*quantity)
+        print(temp)
         # Adds purchase to account log
-        self.log.append("Bought %d Shares Of %s For %d"%(quantity,item.symbol,item.value*quantity))
+        self.log.append(temp)
 
     def defaultSell(self,quantity,item,itemType):
         # Checks if quantity is appropriate for item type
         item.quanityCheck(quantity)
         # Checks if account owns the item
         if item.symbol not in self.items[itemType]:
-            return "You Don't Own Any Shares Of %s"%item.symbol
+            exit("You Don't Own Any Shares Of %s"%item.symbol)
         # Checks if the account owns enough of the item
         if quantity > self.items[itemType][item.symbol]:
-            return "You only own %d Shares Of %s"%(self.items[itemType][item.symbol],item.symbol)
+            exit("You only own %s Shares Of %s"%(str(self.items[itemType][item.symbol]),item.symbol))
         # Adjusts items quantity in account dictionary
         self.items[itemType][item.symbol]-=quantity
         # If item amount is zero removes from account dictionary
@@ -66,8 +79,11 @@ class Portfollio():
         sellValue=quantity*item.sell()
         # Adds profits from sale
         self.cash+=sellValue
+        # Temp string to announce sale
+        temp="Sold %s Shares Of %s For $%.2f"%(str(quantity),item.symbol,sellValue)
+        print(temp)
         # Adds sale to account log
-        self.log.append("Sold %d Shares Of %s For %d"%(quantity,item.symbol,sellValue))
+        self.log.append(temp)
 
 
     ## Buy/Sell methods for Stocks: ##
@@ -89,13 +105,12 @@ class Portfollio():
     ## Formatted Class String: ##
 
     def __str__(self):
-        results=("Account Summary:\n Cash: $%d\n"%self.cash)
+        results=("Account Summary:\n Cash: $%.2f\n"%self.cash)
         for itemType in self.items:
             results+=(" %s: \n"%itemType)
             for item in self.items[itemType]:
-                results+=("\t%d %s\n"%(self.items[itemType][item],item))
+                results+=("\t%s %s\n"%(str(self.items[itemType][item]),item))
         return results
-
 
     ## Account Log Printer: ##
 
@@ -105,6 +120,7 @@ class Portfollio():
 
 class Financialitem():
     def __init__(self,value, symbol):
+
         self.value=value
         self.symbol=symbol
     # Default sell value
@@ -128,15 +144,39 @@ class MutualFund(Financialitem):
     def sell(self):
         return random.uniform(0.9,1.2)
 
+## Function Tests  ##
+
+# Creation
 portfollio = Portfollio()
+
+# Add/Remove Cash
 portfollio.addCash(300.50)
-s =Stock(20,"HFH")
-portfollio.buyStock(5,s)
-mf1 = MutualFund("BRT")
-mf2 = MutualFund("GHT")
-portfollio.buyMutualFund(10.3,mf1)
-portfollio.buyMutualFund(2,mf2)
+portfollio.withdrawCash(67.45)
+
+# Stock Creation
+s_HFH =Stock(20.56,"HFH")
+s_FOX=Stock(60.45,"FOX")
+
+# Stock Buy/Sell
+portfollio.buyStock(5,s_HFH)
+portfollio.buyStock(1,s_FOX)
+portfollio.sellStock(1,s_HFH)
+
+
+# MutualFund Creation
+mf_BRT = MutualFund("BRT")
+mf_GHT = MutualFund("GHT")
+
+# MutualFund Buy/Sell
+portfollio.buyMutualFund(1000.75,mf_BRT)
+portfollio.buyMutualFund(2,mf_GHT)
+portfollio.sellMutualFund(7,mf_BRT)
+portfollio.sellMutualFund(1,mf_GHT)
+
+portfollio.items
+# Printing Portfollio
 print(portfollio)
-portfollio.sellMutualFund(3,mf1)
-portfollio.sellStock(1,s)
+portfollio.cash
+
+# Portfollio History
 portfollio.history()
