@@ -64,7 +64,7 @@ def piglatin(txt):
 				break
 			infront+=word[i]
 		result+=newWord + " "
-	return result
+	return result[:-1]
 
 
 

@@ -1,6 +1,7 @@
 import random
 from sys import exit
 
+
 class Portfollio():
     def __init__(self, cash=0):
         # Initial cash for account
@@ -53,9 +54,9 @@ class Portfollio():
             exit("Error Not Enough Funds")
         # Checks if item already exists in account dictionary and adjusts number
         if item.symbol in self.items[itemType]:
-            self.items[itemType][item.symbol]+=quantity
+            self.items[itemType][item.symbol][1]+=quantity
         # Creates item in account dictionary
-        else: self.items[itemType][item.symbol]=quantity
+        else: self.items[itemType][item.symbol]=[item,quantity]
         # Subtracts cost of purchase
         self.cash-=quantity*item.value
         # Temp string to announce sale
@@ -65,31 +66,31 @@ class Portfollio():
         self.log.append(temp)
 
     # quantity: The number of items (int or float)
-    # item: the financial item (Financialitem)
+    # item: a string of the financial item symbol
     # itemType: the type of financial item (string)
-    def defaultSell(self,quantity,item,itemType):
-        # Checks if quantity is appropriate for item type
-        item.quanityCheck(quantity)
+    def defaultSell(self,item,quantity,itemType):
         # Checks if account owns the item
-        if item.symbol not in self.items[itemType]:
-            exit("You Don't Own Any Shares Of %s"%item.symbol)
+        if item not in self.items[itemType]:
+            exit("You Don't Own Any Shares Of %s"%item)
+        # Checks if quantity is appropriate for item type
+        self.items[itemType][item][0].quanityCheck(quantity)
         # Checks if the account owns enough of the item
-        if quantity > self.items[itemType][item.symbol]:
-            exit("You only own %s Shares Of %s"%(str(self.items[itemType][item.symbol]),item.symbol))
+        if quantity > self.items[itemType][item][1]:
+            exit("You only own %s Shares Of %s"%(str(self.items[itemType][item][1]),item))
         # Adjusts items quantity in account dictionary
-        self.items[itemType][item.symbol]-=quantity
-        # If item amount is zero removes from account dictionary
-        if self.items[itemType][item.symbol] == 0:
-            del self.items[itemType][item.symbol]
+        self.items[itemType][item][1]-=quantity
         # Grabs item's sell value
-        sellValue=quantity*item.sell()
+        sellValue=quantity*self.items[itemType][item][0].sell()
         # Adds profits from sale
         self.cash+=sellValue
         # Temp string to announce sale
-        temp="Sold %s Shares Of %s For $%.2f"%(str(quantity),item.symbol,sellValue)
+        temp="Sold %s Shares Of %s For $%.2f"%(str(quantity),item,sellValue)
         print(temp)
         # Adds sale to account log
         self.log.append(temp)
+        # If item amount is zero removes from account dictionary
+        if self.items[itemType][item][1] == 0:
+            del self.items[itemType][item]
 
 
     ## Buy/Sell methods for Stocks: ##
@@ -100,9 +101,11 @@ class Portfollio():
         self.defaultBuy(quantity,stock,"Stock")
 
     # quantity: The number of items (int)
-    # stock: a stock variable
-    def sellStock(self,quantity,stock):
-        self.defaultSell(quantity,stock,"Stock")
+    # stock: a string of the stock symbol
+    def sellStock(self,stock,quantity):
+        self.defaultSell(stock,quantity,"Stock")
+
+
 
     ## Buy/Sell methods for Mutual Funds ##
 
@@ -112,9 +115,9 @@ class Portfollio():
         self.defaultBuy(quantity,mf,"MutualFund")
 
     # quantity: The number of items (float)
-    # mf: a MutualFund variable
-    def sellMutualFund(self,quantity,mf):
-        self.defaultSell(quantity,mf,"MutualFund")
+    # mf: a string of the MutualFund symbol
+    def sellMutualFund(self,mf,quantity):
+        self.defaultSell(mf,quantity,"MutualFund")
 
     ## Formatted Class String: ##
 
@@ -123,7 +126,7 @@ class Portfollio():
         for itemType in self.items:
             results+=(" %s: \n"%itemType)
             for item in self.items[itemType]:
-                results+=("\t%s %s\n"%(str(self.items[itemType][item]),item))
+                results+=("\t%s %s\n"%(str(self.items[itemType][item][1]),item))
         return results
 
     ## Account Log Printer: ##
@@ -146,6 +149,8 @@ class Financialitem():
     def quanityCheck(self,quantity):
         if quantity <=0:
             exit("Please Enter A Postive Non-Zero Amount")
+    def __str__(self):
+        return self.symbol
 
 class Stock(Financialitem):
     def sell(self):
@@ -174,9 +179,9 @@ s_HFH =Stock(20.56,"HFH")
 s_FOX=Stock(60.45,"FOX")
 
 # Stock Buy/Sell
-portfollio.buyStock(5,s_HFH)
+portfollio.buyStock(1,s_HFH)
 portfollio.buyStock(1,s_FOX)
-portfollio.sellStock(1,s_HFH)
+portfollio.sellStock('HFH',1)
 
 
 # MutualFund Creation
@@ -184,10 +189,10 @@ mf_BRT = MutualFund("BRT")
 mf_GHT = MutualFund("GHT")
 
 # MutualFund Buy/Sell
-portfollio.buyMutualFund(1000.75,mf_BRT)
+portfollio.buyMutualFund(10.75,mf_BRT)
 portfollio.buyMutualFund(2,mf_GHT)
-portfollio.sellMutualFund(7,mf_BRT)
-portfollio.sellMutualFund(1,mf_GHT)
+portfollio.sellMutualFund('BRT',7)
+portfollio.sellMutualFund('GHT',1)
 
 
 # Printing Portfollio
