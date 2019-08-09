@@ -1,8 +1,6 @@
 import random
 from sys import exit
 
-
-
 class Portfollio():
     def __init__(self, cash=0):
         # Initial cash for account

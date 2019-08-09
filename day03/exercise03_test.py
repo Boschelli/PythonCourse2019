@@ -1,8 +1,8 @@
 import unittest
-from exercise03_solution import *
+from exercise03 import *
 
 class exerciseTests(unittest.TestCase):
-    
+
     def test_vowels(self):
         self.assertEqual(4, count_vowels("mississippi"))
         with self.assertRaises(TypeError): count_vowels(5)
@@ -10,4 +10,3 @@ class exerciseTests(unittest.TestCase):
 
 if __name__ == '__main__':
   unittest.main()
-
