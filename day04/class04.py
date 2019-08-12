@@ -117,11 +117,15 @@ fields = soup.find_all('h3') ## list of html entries
 
 # Get the attributes
 all_a_tags = soup.find_all('a')
+all_a_tags
+
 all_a_tags[57]
 all_a_tags[57].attrs ## a dictionary with the attributes
 l = {"class" : [], "href" : []}
 for p in [57,58]:
   l["class"].append(all_a_tags[p].attrs["class"])
+
+print(l)
 
 all_a_tags[57].attrs.keys()
 all_a_tags[57]['href']
@@ -203,6 +207,22 @@ def start_chrome(webpage):
     driver.get(webpage)
     return driver
 
+## Interactive example:
+
+# start the web drivers
+driver = start_chrome('https://www.facebook.com')
+# find the username element and enter text
+username = driver.find_element_by_name('email')
+username.send_keys('r.butler@wustl.edu')
+# find the password field and enter text
+password = driver.find_element_by_name('pass')
+password.send_keys('ImNotActuallyShowingYouMyPassword')
+# find login button and click
+login = driver.find_element_by_id("loginbutton")
+login.click()
+
+
+## Functionalized example (courtesy of Erin Rossiter):
 def define_search(driver):
     ## search element changed id randomly, class was the only other info
     ## but 2 elements in this class... we want the 2nd.
