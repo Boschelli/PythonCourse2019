@@ -18,11 +18,11 @@ with open('test_readfile.txt') as f:
 
 ## More efficiently we can loop over the file object
 ## (i.e. we don't need the variable lines)
-with open('test_readfile.txt') as f:   
+with open('test_readfile.txt') as f:
   for l in f:
     print(l)
-    
-    
+
+
 ## We can also manually open and close files,
 ## now we need to handle exceptions and close
 ## I never do this
@@ -51,29 +51,29 @@ with open('test_writefile.txt', 'a') as f:
 import csv
 
 ## Open a file stream and create a CSV writer object
-with open('test_writecsv.csv', 'wb') as f:
+with open('test_writecsv.csv', 'w') as f:
   my_writer = csv.writer(f)
-  for i in range(1, 100):
-    my_writer.writerow([i, i-1])
+  for j in range(1, 100):
+      my_writer.writerow([j, j-1])
 
 
 ## Now read in the csv
-with open('test_writecsv.csv', 'rb') as f:
+with open('test_writecsv.csv', 'r') as f:
   my_reader = csv.reader(f)
   mydat = []
   for row in my_reader:
     mydat.append(row)
 print(mydat)
 
-    
+
 ## Adding column names
 with open('test_csvfields.csv', 'w') as f:
   my_writer = csv.DictWriter(f, fieldnames = ("A", "B"))
   my_writer.writeheader()
   for i in range(1, 100):
     my_writer.writerow({"B":i, "A":i-1})
-    
-    
+
+
 with open('test_csvfields.csv', 'r') as f:
   my_reader = csv.DictReader(f)
   for row in my_reader:
@@ -92,14 +92,15 @@ with open('test_csvfields.csv', 'r') as f:
 ## pip3 install beautifulsoup4
 
 from bs4 import BeautifulSoup
-import urllib2 
+import urllib.request
 import random
 import time
 import os
 
 ## Open a web page
 web_address = 'https://polisci.wustl.edu/people/88/'
-web_page = urllib2.urlopen(web_address)
+web_page = urllib.request.urlopen(web_address)
+web_page
 
 ## Parse it
 soup = BeautifulSoup(web_page.read())
@@ -128,7 +129,7 @@ all_a_tags[57]['class']
 
 
 ## Use this info about HTML elements to grab them
-soup.find_all('a', {'class' : "person-view-primary-field"})
+soup.find_all('a', {'class' : "card"})
 
 ## There may be tags within tags
 sections = soup.find_all('div')
@@ -140,8 +141,9 @@ sections[2].find_all('a') ## ALL 'a' tags within the 'div' tag
 ## Creating a tree of objects
 all_fields = soup.find_all('div')
 randy = all_fields[31]
+randy
 
-randy.find_all("a")
+randy.find_all("h3")
 
 randy.contents ## Gives a list of all children
 randy.children ## Creates an iterator for children
@@ -181,7 +183,7 @@ download_page('https://polisci.wustl.edu/people/88/', "polisci_ppl.html")
 ## Useful to scrape now, parse later.
 with open('polisci_ppl.html') as f:
   myfile = f.read()
-  
+
 soup = BeautifulSoup(myfile)
 soup.prettify()
 
@@ -225,7 +227,7 @@ def define_search(driver):
 def get_headlines(driver):
     html_source = driver.page_source
     soup = bs(html_source, "lxml")
-    
+
     gma_tags = soup.find_all("span", {"class" : "headline a"})
     gma_headlines = [tag.get_text() for tag in gma_tags]
     with open("headlines.txt", "w") as f:
@@ -247,17 +249,17 @@ main("http://www.spencerdailyreporter.com/")
 
 
 # Copyright (c) 2014 Matt Dickenson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
