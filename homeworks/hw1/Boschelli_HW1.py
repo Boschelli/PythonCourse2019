@@ -2,12 +2,14 @@ import random
 from sys import exit
 
 
+
+
 class Portfollio():
     def __init__(self, cash=0):
         # Initial cash for account
         self.cash=cash
         # Creates empty dictionary with item types
-        self.items={"Stock":{},"MutualFund":{}}
+        self.items={"Stock":{},"MutualFund":{},"Bond":{}}
         # Creates empty list to contain transactions
         self.log=[]
 
@@ -119,6 +121,16 @@ class Portfollio():
     def sellMutualFund(self,mf,quantity):
         self.defaultSell(mf,quantity,"MutualFund")
 
+
+    ## BONUS SECTION ##
+    ## Buy/Sell methods for Bonds ##
+
+    def buyBond(self,quantity,bond):
+        self.defaultBuy(quantity,bond,"Bond")
+
+    def sellBond(self,bond,quantity):
+        self.defaultSell(bond,quantity,"Bond")
+
     ## Formatted Class String: ##
 
     def __str__(self):
@@ -132,8 +144,12 @@ class Portfollio():
     ## Account Log Printer: ##
 
     def history(self):
+        results="Account Log:\n"
+        j=1
         for i in self.log:
-            print(i)
+            results+=str(j)+": "+ i +"\n"
+            j+=1
+        print(results)
 
 class Financialitem():
     # value: the buy value (float)
@@ -153,8 +169,10 @@ class Financialitem():
         return self.symbol
 
 class Stock(Financialitem):
+    # Unique sell value for stocks
     def sell(self):
         return random.uniform((0.5*self.value),(1.5*self.value))
+    # Stocks can only be sold in whole integers
     def quanityCheck(self,quantity):
         if quantity<=0 or type(quantity) != int:
             exit("Error Stocks Must Be In Integer Units Greater Than Or Equal To One")
@@ -162,8 +180,27 @@ class Stock(Financialitem):
 class MutualFund(Financialitem):
     def __init__(self,symbol):
         Financialitem.__init__(self,1,symbol)
+    # MutualFunds specific sell value
     def sell(self):
         return random.uniform(0.9,1.2)
+
+## BONUS ##
+class Bond(Financialitem):
+    # Bonds have interest rates, but the rest is the same
+    # intRate: interest rate in actual percent (i.e. %3.5 => 0.035)
+    def __init__(self,value,symbol,intRate):
+        self.intRate=intRate
+        Financialitem.__init__(self,value,symbol)
+    # Sell value is face value plus interest
+    def sell(self):
+        return self.value+(self.value*self.intRate)
+    # Much like stocks can only be sold in whole units
+    def quanityCheck(self,quantity):
+        if quantity<=0 or type(quantity) != int:
+            exit("Error Bonds Must Be In Integer Units Greater Than Or Equal To One")
+
+
+
 
 ## Function Tests  ##
 
@@ -199,4 +236,18 @@ portfollio.sellMutualFund('GHT',1)
 print(portfollio)
 
 # Portfollio History
+portfollio.history()
+
+
+## BONUS ##
+
+# Bond Creation
+b_USFG=Bond(100,"USFG",0.035)
+
+# Bond Buy/sell
+portfollio.buyBond(3,b_USFG)
+portfollio.sellBond("USFG",2)
+
+# Print/Log Check
+print(portfollio)
 portfollio.history()
