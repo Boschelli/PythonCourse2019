@@ -15,14 +15,14 @@ web_address = 'https://polisci.wustl.edu/people/88/'
 web_page = urllib.request.urlopen(web_address)
 soup = BeautifulSoup(web_page.read())
 
-# Get Faculty URLS
+# Get Faculty URLS #
 
 links=[]
  test=soup.find_all('a',{'class':'card'}):
 for i in test:
 	links.append("https://polisci.wustl.edu"+i.get('href'))
 
-# Webscrapping
+# Webscrapping #
 
 results=[]
 for faculty in links:
@@ -58,14 +58,17 @@ for faculty in links:
 		pass
 	results.append([name,title,email,website,specialization])
 
-# Getting Rid of Pesky Unicoding
+# Getting Rid of Pesky Unicoding #
+
 for i in results:
 	if "\u200b" in i[-1]:
 		print('Found one')
 		i[-1]=i[-1][1:-1]
-# Printing to CSV
+
+# Printing to CSV #
+
 with open('washu_fauclty.csv','w') as f:
-	my_writer=csv.DictWriter(f,fieldnames=('Name','Title','Specialization','Email','Webpage'))
+	my_writer=csv.DictWriter(f,fieldnames=('Name','Title','Specialization','Email','Webpage'),lineterminator = '\n')
 	my_writer.writeheader()
 	for faculty in results:
 		my_writer.writerow({'Name':faculty[0],'Title':faculty[1],'Specialization':faculty[4],'Email':faculty[2],'Webpage':faculty[3]})
