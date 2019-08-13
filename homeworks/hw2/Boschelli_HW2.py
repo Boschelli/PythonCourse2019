@@ -91,13 +91,3 @@ with open('whitehouse_petitions.csv','w') as f:
       tempList=soup.find_all('h3')[3:]
       print("Running...")
 print("Finished!")
-
-
-
-web_address = 'https://petitions.whitehouse.gov/petitions?page=1'
-web_page = urllib.request.urlopen(web_address)
-soup = BeautifulSoup(web_page.read(),features='html.parser')
-
-
- # Grabs first page of petition hyper links
- tempList=soup.find_all('h3')[3:]
