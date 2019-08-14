@@ -27,9 +27,7 @@ def scrapePetition(url):
     # Grabs signature count
     signatures=soup2.find('span',{'class':'signatures-number'}).get_text()
 
-    # Grabs list of issue tags
-    #issueAreas=soup2.find('div',{"class" :"field field-name-field-petition-issues field-type-taxonomy-term-reference field-label-hidden tags"}).div.contents
-    # Turns list of tags into formatted string
+    # Grabs and turns list of tags into formatted string
     tags=''
     for i in soup2.find('div',{"class" :"field field-name-field-petition-issues field-type-taxonomy-term-reference field-label-hidden tags"}).div.contents:
         tags+=i.get_text()+', '
@@ -56,7 +54,7 @@ with open('whitehouse_petitions.csv','w') as f:
   my_writer.writeheader()
 
   # Opens primary webscraper
-  web_address = 'https://petitions.whitehouse.gov/petitions?page=1'
+  web_address = 'https://petitions.whitehouse.gov/petitions'
   web_page = urllib.request.urlopen(web_address)
   soup = BeautifulSoup(web_page.read(),features='html.parser')
   print('Starting Web Scarping...')
@@ -81,7 +79,10 @@ with open('whitehouse_petitions.csv','w') as f:
              pass
 
       # Adjusts address to next page number
-      web_address=web_address[:-1]+str(int(web_address[-1])+1)
+      try:
+          web_address='https://petitions.whitehouse.gov'+soup.find('div',{'class':'page-load-next'}).a.get('href')
+      except:
+          break
 
       # Reopens main webscraper
       web_page = urllib.request.urlopen(web_address)

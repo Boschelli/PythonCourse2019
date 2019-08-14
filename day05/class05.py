@@ -20,10 +20,13 @@ print(text[2])
 ## Join into one string
 ## What could we have done at the outset instead?
 alltext = ''.join(text)
-
+alltext
 
 ## Regular Expressions --------------------------------------------------------
 ## Help us find patterns in the string.
+
+
+
 
 # re.findall
 # re.split
@@ -59,7 +62,7 @@ re.findall(r"\.", alltext) ## \ is escape
 ## Now, how much of these things?
 
 re.findall(r"\d", alltext)
-re.findall(r"\d*", alltext) ## * 0 or more 
+re.findall(r"\d*", alltext) ## * 0 or more
 re.findall(r"\d+", alltext) ## + 1 or more
 re.findall(r"\d?", alltext) ## ? 0 or 1
 re.findall(r"\d{3}", alltext) ## {x} exactly x times
@@ -87,7 +90,7 @@ re.findall(r"([A-Z]+\w*)\W*", alltext)
 
 
 ## 'r' means raw string -- read string literally
-## used instead of escape character "\" 
+## used instead of escape character "\"
 "\n"
 print("\n")
 
@@ -104,20 +107,20 @@ print(r"\n")
 re.split(r'\d', alltext) ## splits at digits, deletes digits
 
 ## What is this doing?
-re.split(r'\.', alltext) 
+re.split(r'\.', alltext)
 re.split(r'(\.)', alltext) ## () splits and keeps separator
 
 
 
 ## compile the regular expression as an object
 ## then the regular expression has methods!
-keyword = re.compile(r"America[a-z]*")
-
+keyword = re.compile(r"America[a-z]*",re.MULTILINE)
+keyword.find(alltext)
 ## search file for keyword in line by line version
 for i, line in enumerate(text):
   if keyword.search(line):
-  	print(i)
-    print(line) 
+    print(i)
+    print(line)
 
 
 pattern = re.compile(r'\d') #Create a regex object
@@ -255,7 +258,7 @@ classifier = nltk.NaiveBayesClassifier.train(train_set)
 print(nltk.classify.accuracy(classifier, test_set))
 
 
-classifier.show_most_informative_features(100)
+classifier.show_most_informative_features(5)
 
 
 ## Worse? Better? How can we refine?
@@ -270,7 +273,7 @@ for (name, label) in test_names:
 
 
 for (label, guess, prob, name) in sorted(errors):
-  print 'correct=%-10s guess=%-10s prob=%-10s name=%-10s' % (label, guess, prob, name)
+  print ("correct=%-10s guess=%-10s prob=%-10s name=%-10s "%(label, guess, prob, name))
 
 
 
@@ -295,7 +298,7 @@ def g_features3(name):
 train_set = [(g_features3(n), g) for (n,g) in train_names]
 test_set = [(g_features3(n), g) for (n,g) in test_names]
 classifier = nltk.NaiveBayesClassifier.train(train_set)
-print nltk.classify.accuracy(classifier, test_set)
+print (nltk.classify.accuracy(classifier, test_set))
 
 
 
@@ -344,17 +347,17 @@ print(nltk.classify.accuracy(classifier, test_set[:50]))
 classifier.show_most_informative_features(1000)
 
 # Copyright (c) 2014 Matt Dickenson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -362,7 +365,3 @@ classifier.show_most_informative_features(1000)
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-
-
-
