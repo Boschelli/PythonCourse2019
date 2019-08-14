@@ -42,7 +42,7 @@ def scrapePetition(url):
         # Iterates over potential paragraph bodies
         for i in soup2.find('div',{"class" :"field-item"}).find_all('p'):
             summary+=i.get_text()+' '
-        # Removes string on the very end
+        # Removes space on the very end
         summary=summary[:-1]
     # Fails if no summary is provided
     except:
