@@ -1,15 +1,16 @@
 # install sqlite from sqlite.org
 # pip install sqlalchemy
-# pip install pysqlite
+
 # Check: http://pythoncentral.io/introductory-tutorial-python-sqlalchemy/
 import sqlalchemy
+import sqlite3
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, and_, or_
 from sqlalchemy.orm import relationship, backref, sessionmaker
 
 # - Connect to the local database
-# - The return value of create_engine() is an instance of Engine,
+# - The return value of create_engine() is an instance of Engine
 #         and it represents the core interface to the database
 # - We could use it to talk to databse directly,
 # - but we'd rather use Session object to work with ORM
@@ -22,11 +23,11 @@ engine = sqlalchemy.create_engine('sqlite:///players.db', echo=True)
 #     2. define our own python class object
 #     3. "mapper" to map the python object to SQL table
 # - All done together using Declarative system
-# - In other words, create classes that include directives to describe the actual 
+# - In other words, create classes that include directives to describe the actual
 #     database table they will be mapped to
 # - Classes mapped using the Declarative system are defined in terms of a Base class
 # - Base class maintains a catalog of classes and tables relative to that base
-Base = declarative_base() 
+Base = declarative_base()
 
 # Define some schemas
 # One to Many example
@@ -34,31 +35,31 @@ Base = declarative_base()
 # - relationship() then specified by parent (team) to reference many items
 class Player(Base):
   __tablename__ = 'players'
-  
+
   ## primary_key is unique, non-nullable identifier for row
   ## Have an ID column because player attributes (name, etc) are not unique
   ## at least 1 per table
-  id = Column(Integer, primary_key=True) 
+  id = Column(Integer, primary_key=True)
   name = Column(String)
   number = Column(Integer)
-  
+
   ## ForeignKey tells us we have a relationship with another table ("teams") by the ("id") variable
   ## This info constrained to only come from that table
   ## What we are referencing is usually the primary key for that table
-  team_id = Column(Integer, ForeignKey("teams.id")) 
-  
+  team_id = Column(Integer, ForeignKey("teams.id"))
+
   def __init__(self, name, number, team=None):
     self.name = name
     self.number = number
     self.team = team
-    
+
   def __repr__(self):
     return "<Player('%s', '%s')>" % (self.name, self.number)
 
 
 class Team(Base):
   __tablename__ = "teams"
-  
+
   id = Column(Integer, primary_key=True)
   name = Column(String)
   ## - use strings because these things aren't created yet
@@ -68,13 +69,13 @@ class Team(Base):
   ##          but we can call <team obj>.players
   ##          or <player obj>.team
   players = relationship("Player", backref="team")
-  
+
   def __init__(self, name):
     self.name = name
-  
+
   def __repr__(self):
     return "<team('%s')>" % (self.name)
-    
+
 # - First time create tables
 # - The MetaData is a registry which includes the ability make schema commands
 #    to database.
@@ -82,11 +83,11 @@ class Team(Base):
 #     MetaData to issue CREATE TABLE statements to the database
 #     for all tables that don’t yet exist.
 
-Base.metadata.create_all(engine) 
+Base.metadata.create_all(engine)
 
 # - SQLAlchemy represent info for specific table with Table object
 # So what columns do we have?
-Player.__table__  
+Player.__table__
 Team.__table__
 
 
@@ -95,7 +96,7 @@ Team.__table__
 ## one instance each table
 p1 = Player(name = "Ryden", number = 25)
 t1 = Team(name = "WashU")
-## add team reference to player 
+## add team reference to player
 p1.team = t1
 ## now a part of team object
 t1.players
@@ -109,7 +110,7 @@ mason = Player("Mason Plumlee", 5)
 print(str(mason.id))
 # - Nothing?
 # - Even though we didn’t specify it in the constructor, the id attribute still produces a value
-# of None when we access it (as opposed to Python’s usual behavior of raising AttributeError 
+# of None when we access it (as opposed to Python’s usual behavior of raising AttributeError
 # for an undefined attribute).
 # - when put in db it will be assigned
 
@@ -130,14 +131,14 @@ session.add_all([Player("Miles Plumlee", 40),
   Player("The other Plumlee", 100)])
 
 # see what we've done this session
-session.new 
+session.new
 
 # now make changes to actual db
 session.commit()
 
 
 # Test again... (it keeps the count in the order they entered the database)
-print str(mason.id)
+print(str(mason.id))
 
 
 # Some querying
@@ -145,7 +146,7 @@ print str(mason.id)
 # you can think of it as... session.query(TABLE).order_by(COLUMN)
 for player in session.query(Player).order_by(Player.number):
   print(player.number, player.name, player.id)
-  
+
 # limit the results
 # 1. orders by number
 # 2. grab by index
@@ -156,14 +157,14 @@ for player in session.query(Player).order_by(Player.number)[1:3]:
 # lots of options: http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#common-filter-operators
 for player in session.query(Player).filter(Player.name == "Mason Plumlee").order_by(Player.number):
   print(player.number, player.name)
-  
+
 for player in session.query(Player).filter(Player.name != "Mason Plumlee").order_by(Player.number):
   print(player.number, player.name)
 
 # or_()
 for player in session.query(Player).filter(or_(Player.name == "Mason Plumlee", Player.name == "Miles Plumlee")).order_by(Player.number):
   print(player.number, player.name)
-  
+
 # .like()
 ## return all the rows with 'name' column contains the partial string "Plumlee"
 for player in session.query(Player).filter(Player.name.like("%Plumlee%")).order_by(Player.number):
@@ -239,7 +240,7 @@ session.query(Player).filter(Player.number == 30).count()
 session.query(Player).filter(Player.name.like("%Seth%")).count()
 players
 players = session.query(Player).all()
-players 
+players
 
 
 
@@ -280,14 +281,14 @@ for player in players:
 # "Anna Karenina"     1     "Anna Karenina"       1877
 # "Tale of Two Cities"      2     "Alexandre Manette"     1859
 # "Crime and Punishment"  3     "Raskolnikov"       1866
- 
+
 # author_table
 # author_id       author_name     country_id
 # 1           Tolstoy       1
 # 2           Dickens       2
 # 3           Dostoevsky      1
 # 4           Darwin        1
- 
+
 # country_table
 # country_id        country_name      capital
 # 1             Russia          Moscow
@@ -301,25 +302,25 @@ from sqlalchemy.orm import relationship, backref, sessionmaker
 
 engine = sqlalchemy.create_engine('sqlite:///books.db', echo=True)
 
-Base = declarative_base() 
+Base = declarative_base()
 
 #Define some schemas
 class Book(Base):
     __tablename__ = 'books'
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(String)
     main_character = Column(String)
     year = Column(Integer)
-    
+
     ## how will this table speak to other tables?
     author_id = Column(Integer, ForeignKey('authors.id'))
-    
+
     def __init__(self, name, main_character=None, year=None):
       self.name = name
       self.main_character = main_character
       self.year = year
-      
+
     def __repr__(self):
       if self.author: return "<Book(%s by %s)>" % (self.name, self.author.name)
       return "<Book(%s)>" %(self.name)
@@ -339,7 +340,7 @@ class Author(Base):
 
     def __init__(self, name):
       self.name = name
-    
+
     def __repr__(self):
       return "<Author('%s')>" % (self.name)
 
@@ -347,26 +348,26 @@ class Author(Base):
 
 class Country(Base):
     __tablename__ = 'countries'
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(String)
     capital = Column(String)
-    
+
     ## what does this do?
     authors = relationship('Author', backref='country')
-      
+
     def __init__(self, name, capital=None):
       self.name = name
       self.capital = capital
-    
+
     def __repr__(self):
       return "<Country('%s')>" % (self.name)
 
 # First time create tables
-Base.metadata.create_all(engine) 
+Base.metadata.create_all(engine)
 
 
-Country.__table__  
+Country.__table__
 
 
 book1=Book('war and peace')
@@ -407,7 +408,7 @@ session.commit()
 print(list(session.query(Author)))
 
 all_authors = session.query(Author).all()
- 
+
 for author in all_authors:
     print(author.name, author.country.name)
 
@@ -419,7 +420,7 @@ session.add(book2)
 
 book3=Book('tale of two cities')
 session.add(book3)
- 
+
 
 
 for b in session.query(Book):
@@ -431,17 +432,17 @@ for a in session.query(Author):
 xx = session.query(Book, Author).all()
 for row in session.query(Book, Author):
     print(row)
-  
+
 for x, y in session.query(Book, Book.author):
     print(x, y)
 
 # for book, author in session.query(Book, Author).filter(Book.author != None):
 #     print book.name, author.name
-#   
+#
 for book in session.query(Book).join(Author):
     print(book.name, book.author.name)
-# 
-# 
+#
+#
 session.commit()
 
 
@@ -461,17 +462,17 @@ session.commit()
 
 
 # Copyright (c) 2014 Matt Dickenson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
