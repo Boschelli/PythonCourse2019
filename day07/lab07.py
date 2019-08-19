@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship, backref, sessionmaker
 
 engine = sqlalchemy.create_engine('sqlite:///geog.db', echo=False)
 
-Base = declarative_base() 
+Base = declarative_base()
 
 # Schemas
 class Region(Base):
@@ -16,10 +16,10 @@ class Region(Base):
   departments = relationship("Department", backref = "region")
 
   def __init__(self, name):
-    self.name = name 
+    self.name = name
 
   def __repr__(self):
-    return "<Region('%s')>" % self.id 
+    return "<Region('%s')>" % self.id
 
 
 
@@ -28,14 +28,14 @@ class Department(Base):
 
   id = Column(Integer, primary_key=True)
   deptname = Column(String)
-  region_id = Column(Integer, ForeignKey('regions.id')) 
+  region_id = Column(Integer, ForeignKey('regions.id'))
   towns = relationship("Town", backref = "department")
 
   def __init__(self, deptname):
-    self.deptname = deptname 
+    self.deptname = deptname
 
   def __repr__(self):
-    return "<Department('%s')>" % self.id 
+    return "<Department('%s')>" % self.id
 
 
 
@@ -48,7 +48,7 @@ class Town(Base):
   dept_id = Column(Integer, ForeignKey('departments.id'))
 
   def __init__(self, name, population):
-    self.name = name 
+    self.name = name
     self.population = population
 
   def __repr__(self):
@@ -58,7 +58,7 @@ class Town(Base):
 
 
 #First time create tables
-Base.metadata.create_all(engine) 
+Base.metadata.create_all(engine)
 
 #Create a session to actually store things in the db
 Session = sessionmaker(bind=engine)
@@ -107,16 +107,25 @@ session.add_all([t1, t2, t3, t4, t5, t6, t7, t8])
 
 session.commit()
 
-# Some example querying 
+# Some example querying
 for town in session.query(Town).order_by(Town.id):
   print(town.id, town.name, town.population)
 
 
-# TODO: 
+# TODO:
 # 1. Display, by department, the cities having
 #    more than 50,000 inhabitants.
+
+for city in session.query(Town).join(Department).filter(Town.population>50000).order_by(Department.deptname):
+    print(city.department.deptname,city.population)
 # 2. Display the total number of inhabitants
 #    per department
+
+for dept in session.query(Department).join(Town):
+    pop=0
+    for town in dept.towns:
+        pop+=town.population
+    print(dept.deptname,pop)
 
 
 
@@ -124,17 +133,17 @@ for town in session.query(Town).order_by(Town.id):
 
 
 # Copyright (c) 2014 Matt Dickenson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE

@@ -32,7 +32,7 @@ webbrowser.open(charts.items[0].url)
 question_slug = next(c.question.slug for c in charts.items if c.question.n_polls > 30)
 question_slug
 
-## grab polls with get request that matches our question_slug 
+## grab polls with get request that matches our question_slug
 polls = api.polls_get(
   question = question_slug,
   sort = 'created_at'
@@ -215,10 +215,11 @@ len(simgroups)
 #### Twitter API
 
 #pip install tweepy
-import tweepy
+import tweep
+import imp
 # http://docs.tweepy.org/en/v3.8.0/api.html
 
-twitter = imp.load_source('twit', '/Users/ryden/Dropbox/Coding/Secrets/start_twitter.py')
+twitter = imp.load_source('twit', '/Users/lucas/OneDrive/Documents/SCHOOL/Programming/Python Scripts/Essential Scripts/start_twitter.py')
 api = twitter.client
 
 ## See rate limit
@@ -235,7 +236,7 @@ for i in limit["resources"]["tweets"].keys():
 
 ## Create user objects
 don = api.get_user('realDonaldTrump')
-don ## biiiig object 
+don ## biiiig object
 
 type(don)
 dir(don)
@@ -292,7 +293,7 @@ histweets
 
 ## You should definitely hit the rate limit here.....
 hisfollowers = []
-for item in tweepy.Cursor(api.followers_ids, 'realDonaldTrump').items():
+for item in tweepy.Cursor(api.followers_ids, 'realDonaldTrump').items(500):
 	hisfollowers.append(item)
 
 len(hisfollowers)
