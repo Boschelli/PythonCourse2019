@@ -4,6 +4,7 @@ import os
 import csv
 
 
+
 twitter = imp.load_source('twit', '/Users/lucas/OneDrive/Documents/SCHOOL/Programming/Python Scripts/Essential Scripts/start_twitter.py')
 api = twitter.client
 
@@ -14,7 +15,7 @@ def get_followers(id):
     	followers.append(item)
     return followers
 
-def get_following():
+def get_following(id):
     follows = []
     for item in tweepy.Cursor(api.friends_ids, id).items():
     	follows.append(item)
@@ -43,7 +44,7 @@ def get_follow_info(followers,start=0,fileName='twitter_data.csv'):
             else:
                 follower_summary["Celebrity"][s_name]=[f_count,s_count]
                 my_writer.writerow({"Screen Name":s_name, "Follower Count":f_count,"Total Tweets":s_count,"Type":"Celebrity"})
-            print("User %d of %d added"%(i+1,stop))
+            print("Follower %d of %d added"%(i+1,stop))
     return follower_summary
 
 
@@ -63,8 +64,19 @@ def get_max(item,count_type='f'):
 wustl_followers=get_followers('WUSTL')
 wustl_following=get_following('WUSTL')
 
-test01=get_followers('WUSTLPoliSci')
-test02=get_follow_info(test01,fileName='WUSTLPoliSci_twitter_data.csv')
+wustl_following_info=get_follow_info(wustl_following,fileName='wustl_following_twitter_data.csv')
+wustl_followers_info=get_follow_info(wustl_followers,fileName='wustl_followers_twitter_data.csv')
+wustl_followers_info=get_follow_info(wustl_followers,fileName='wustl_followers_twitter_data_part2.csv',start=14181)
+
+
+
+wustlPoliSci_followers=get_followers('WUSTLPoliSci')
+wustlPoliSci_following=get_following('WUSTLPoliSci')
+
+for followers in wustl_followers:
+
+
+
 
 for type in test02:
     print(get_max(test02[type]))
