@@ -33,7 +33,7 @@ def binary_search(sorted_list, element):
   if element < median:
     left = sorted_list[0:middle]
     return binary_search(left, element)
-  else: 
+  else:
     right = sorted_list[middle:]
     return binary_search(right, element)
 
@@ -56,7 +56,7 @@ def fib(n):
 # fib(3) = fib(2) + fib(1) = 2
 # fib(2) = fib(1) + fib(0) = 1
 # fib(1) = 1
-# fib(0) = 0 
+# fib(0) = 0
 
 for i in range(35):
   print("{0} : {1}".format(i, fib(i)))
@@ -66,10 +66,10 @@ for i in range(35):
 # Exercise:
 
 def factorial(n):
-##if base case:
-##  return something
-##else:
-##  return a recursive call
+    if n==0:
+        return 1
+    else:
+        return factorial(n-1)*n
 
 
 
@@ -77,30 +77,53 @@ def factorial(n):
 # Sorting
 
 my_numbers = [1, 9, 8, 5, 4, 6, 0, 2, 3, 7]
-
+my_numbers==sorted(my_numbers)
 # Bogo Sort
 # 1) Randomize number order
 # 2) If sorted: stop; else: repeat
 
+
+import random
 def bogo_sort(numbers):
+    numbers=shuffle(numbers)
+
     return answer
 
-
+my_numbers
 # Selection Sort
 # 1) Find minimum of the unsorted list
 # 2) Remove minimum and place it in first element on new list
 # 3) Repeat until unsorted list is empty
 
 def selection_sort(numbers):
-    return answer
+    sorted_list=[]
+    while len(numbers)>0:
+        sorted_list.append(numbers.pop(numbers.index(min(numbers))))
+    return sorted_list
+
+selection_sort(my_numbers)
 
 
 
+
+test=[range(0,9)]
+test
+my_numbers.insert(0,9)
+my_numbers
 # Insertion Sort
 # 1) Start with the element in the second position
 # 2) Insert it to the correct position to the left
 # - Check left-most element until value is greater
 # 3) Continue to next position
+def insertion_sort(numbers):
+    for i in range(1,len(numbers)):
+        for j in range(0,i):
+            if numbers[i]<numbers[j]:
+                numbers.insert(j,numbers.pop(i))
+    return  numbers
+
+insertion_sort(my_numbers)
+
 
 
 
@@ -112,6 +135,17 @@ def selection_sort(numbers):
 # 4) If swaps occurred in 1 - 3, repeat for first n - 1 elements
 
 def bubble_sort(numbers):
+    for i in range(len(numbers)-1):
+        if numbers[i]>numbers[i+1]:
+            numbers[i],numbers[i+1]=numbers[i+1],numbers[i]
+bubble_sort(my_numbers)
+my
+
+
+
+
+
+
     return answer
 
 
@@ -137,5 +171,3 @@ Maybe a description here
 """
 plt.figtext(.5, .05, txt, fontsize = 10, ha = "center")
 plt.savefig('plot.pdf')
-def insertion_sort(numbers):
-    return answer

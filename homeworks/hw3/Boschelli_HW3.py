@@ -61,6 +61,18 @@ def get_max(item,count_type='f'):
     return [maxName,maxb]
 
 
+
+def get_followers_from_csv(fileName):
+    with open(fileName, 'r') as f:
+      my_reader = csv.DictReader(f,fieldnames = ("Screen Name", "Follower Count","Total Tweets","Type"),lineterminator = '\n')
+      results = []
+      for row in my_reader:
+        results.append(row)
+    return results
+
+
+
+
 wustl_followers=get_followers('WUSTL')
 wustl_following=get_following('WUSTL')
 
@@ -71,9 +83,37 @@ wustl_followers_info=get_follow_info(wustl_followers,fileName='wustl_followers_t
 
 
 wustlPoliSci_followers=get_followers('WUSTLPoliSci')
-wustlPoliSci_following=get_following('WUSTLPoliSci')
+wustl_followers_info=get_follow_info(wustl_followers,fileName='WUSTLPoliSci_twitter_data.csv')
+wustlPoliSci_followers_info=get_followers_from_csv('WUSTLPoliSci_twitter_data.csv')
 
-for followers in wustl_followers:
+wustlPoliSci_followers_extended=[]
+wustlPoliSci_followers_extended.extend([wustlPoliSci_followers_info[i]["Screen Name"] for i in range(1,len(wustlPoliSci_followers_info))])
+
+
+wustlPoliSci_following=get_following('WUSTLPoliSci')
+wustlPoliSci_following_extended=[]
+wustlPoliSci_following_extended.extend(wustlPoliSci_following)
+
+
+for i in range(len(wustlPoliSci_followers_info)):
+    if wustlPoliSci_followers_info[i]['Type']=='Celebrity':
+        print("Not Going to add followers of Celebrity %d of %d"%(i+1,len(wustlPoliSci_followers_info)))
+        pass
+    try:
+        wustlPoliSci_followers_extended.extend(get_followers(wustlPoliSci_followers_info[i]["Screen Name"]))
+        print("Added followers of %d of %d"%(i+1,len(wustlPoliSci_followers_info)))
+    except:
+        print("Unable to add followers of %d of %d"%(i+1,len(wustlPoliSci_followers_info)))
+        pass
+
+
+
+
+for following in wustlPoliSci_following:
+    try:
+        wustlPoliSci_following_extended.extend(get_following(following))
+    except:
+        pass
 
 
 
