@@ -1,7 +1,7 @@
 import random
 import time
 
-# Adapted from wikipedia suedo code
+# Adapted from wikipedia psuedo code
 def mergesort(list):
     if len(list)>1:
         middle=len(list)//2
@@ -23,6 +23,7 @@ def mergesort(list):
     else:
         return list
 
+
 def selectionsort(list):
     sorted=[]
     if len(list)>1:
@@ -32,17 +33,50 @@ def selectionsort(list):
     else:
         return list
 
-def sort_tester(n=10,increment=1):
-    for i in range(1,n+1,(n//increment)):
-        test_list=[]
-        for j in range(0,i):
-            x = random.randint(1,10)
-            test_list.append(x)
 
 
 
 
 
+def sort_tester(n=10):
+    results=[]
+    test_list=[]
 
-mergesort(testlist)
-selectionsort(testlist)
+    for j in range(0,n):
+        test_list.append(j)
+    random.shuffle(test_list)
+
+    start = time.time()
+    mergesort(test_list)
+    end = time.time()
+    results.append(100*(end-start))
+
+    start = time.time()
+    selectionsort(test_list)
+    end = time.time()
+    results.append(100*(end-start))
+    return results
+
+results={'Merge':[],'Selection':[]}
+for i in range(100,2000,100):
+    temp=sort_tester(i)
+    results['Merge'].append(temp[0])
+    results['Selection'].append(temp[1])
+
+
+import matplotlib.pyplot as plt
+
+x = range(100,2000,100) ## # of elements in list
+y1 = results['Merge'] ## time
+y2 = results['Selection']
+plt.subplots_adjust(left = .13, right = .95, top = .9, bottom = .3)
+plt.plot(x, y1)
+plt.plot(x,y2)
+plt.legend(['Merge', 'Selection'], loc = "upper left", prop = {"size":10})
+plt.ylabel("Miliseconds")
+plt.xlabel("Size of List")
+plt.title("The Effect of Different Sort Algorithms on Runtime")
+plt.savefig('plot.pdf')
+
+
+  
