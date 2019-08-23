@@ -6,17 +6,18 @@ def makeLink(G, node1, node2):
   if node2 not in G:
     G[node2] = {}
   (G[node2])[node1] = True
-  return G 
+  return G
 
 graph = {}
 graph = makeLink(graph, "a", "b")
+graph
 
 
-## empty graph 
-ring = {} 
+## empty graph
+ring = {}
 
-## number of nodes 
-n = 5 
+## number of nodes
+n = 5
 
 ## Add in edges with makeLink function
 for i in range(n):
@@ -36,21 +37,53 @@ print(sum([len(ring[node]) for node in ring.keys()])/2)
 ## TODO: create a square graph with 256 nodes using the makeLink function
 ## TODO: define a function countEdges
 
+import math
+math.sqrt(256)
+
+sqre={}
+for i in range(1,257):
+    if i<16:
+        sqre = makeLink(sqre,i,(i+1))
+    elif i==256:
+        sqre = makeLink(sqre, i, (i-16))
+    elif i%16==0:
+        sqre = makeLink(sqre, i, (i+16))
+    else:
+        sqre = makeLink(sqre, i, (i+1))
+        sqre = makeLink(sqre, i, (i-16))
+sqre
+
+def squareGraph(n):
+    sqre={}
+    for i in range(1,(n+1)):
+        if i<math.sqrt(n):
+            sqre = makeLink(sqre,i,(i+1))
+        elif i==n:
+            sqre = makeLink(sqre, i, int(i-math.sqrt(n)))
+        elif i%math.sqrt(n)==0:
+            sqre = makeLink(sqre, i, int(i+math.sqrt(n)))
+        else:
+            sqre = makeLink(sqre, i, (i+1))
+            sqre = makeLink(sqre, i, int(i-math.sqrt(n)))
+    return sqre
 
 
+test=squareGraph(256)
 
+def countEdges(graph):
+    print(sum([len(graph[node]) for node in graph.keys()])/2)
 
-
+countEdges(test)
 
 
 
 ##  Social Network
 class Actor(object):
   def __init__(self, name):
-    self.name = name 
+    self.name = name
 
   def __repr__(self):
-    return self.name 
+    return self.name
 
 ss = Actor("Susan Sarandon")
 jr = Actor("Julia Roberts")
@@ -73,6 +106,7 @@ movies = makeLink(movies, kb, ms) # The River Wild
 movies = makeLink(movies, ah, ms) # Devil Wears Prada
 movies = makeLink(movies, ah, jr) # Valentine's Day
 
+movies
 
 
 
@@ -83,7 +117,7 @@ def findPath(graph, start, end, path=[]):
     ## base case, reached end
     if start == end:
         return path
-    if not graph.has_key(start):
+    if not start in graph.keys():
         return None
     ## for each connection to starting node
     for node in graph[start]:
@@ -95,13 +129,13 @@ def findPath(graph, start, end, path=[]):
     return findPath(graph, node, end, path)
 
 
-print(findPath(movies, jr, ms))
+print(findPath(movies, jr, dh))
 
-## start with julia roberts 
+## start with julia roberts
 ## who is she directly connected to?
 movies[jr].keys()
 ## who are they connected to?
-movies[ss].keys() 
+movies[ss].keys()
 movies[ah].keys() ## found meryl streep!
 movies[dh].keys()
 movies[kb].keys() ## found meryl streep!
@@ -116,6 +150,20 @@ movies[kb].keys() ## found meryl streep!
 ## allPaths = findAllPaths(movies, jr, ms)
 ## for path in allPaths:
 ##   print path
+def findAllPaths(graph, start, end, path=[]):
+    ## create list
+    allpaths=[]
+    path = path + [start]
+    ## base case, reached end
+    if start == end:
+        return path
+    if not start in graph.keys():
+        return None
+    ## for each connection to starting node
+    for node in graph[start]:
+        if node not in path:
+            allpaths.append(findAllPaths(graph,node,end,path))
+    return allpaths
 
 
 
@@ -124,24 +172,26 @@ movies[kb].keys() ## found meryl streep!
 
 ## TODO: implement findShortestPath() to print shorest path between actors
 ## print findShortestPath(movies, ms, ss)
+def findShortestPath(graph, start, end):
+    return min(findAllPaths(graph, start, end),key=len)
 
-
+findShortestPath(movies, kb, ah)
 
 
 
 
 # Copyright (c) 2014 Matt Dickenson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
