@@ -251,3 +251,12 @@ portfollio.sellBond("USFG",2)
 # Print/Log Check
 print(portfollio)
 portfollio.history()
+
+
+
+import time
+i=1
+while True:
+    print('Running...')
+    time.sleep(15)
+    i+=3
