@@ -39,6 +39,7 @@ class LinkedList():
         return self.length
 
     # Base add node method
+    # Complexity: O(1) while it is technically more than 1 step it is constant regardless of list size
     def addNode(self,newValue,before=None):
         # Checks if value is valid
         if type(newValue) != int:
@@ -64,6 +65,7 @@ class LinkedList():
     # Adds node after specified node
     # newValue: Int value for node
     # afterNode: Specified node for placement
+    # Complexity: Best O(1), Worst O(n)
     def addNodeAfter(self, newValue, afterNode):
         # Checks if user provided a node
         if type(afterNode) != Node:
@@ -85,6 +87,7 @@ class LinkedList():
     # Adds node before specified node
     # newValue: Int value for node
     # beforeNode: Specified node for placement
+    # Complexity: Best O(1) Worst: O(n)
     def addNodeBefore(self, newValue, beforeNode):
         # Checks if value is valid
         if type(newValue) != int:
@@ -117,6 +120,7 @@ class LinkedList():
 
     # Removes node from list
     # nodeToRemove: The node the user wants to remove
+    # Complexity: Best O(1) Worst O(n)
     def removeNode(self,nodeToRemove):
         # Checks if user provided a node
         if type(nodeToRemove) != Node:
@@ -154,6 +158,7 @@ class LinkedList():
 
     # Removes all nodes with specified value
     # value: int of node value
+    # Complexity: O(n)
     def removeNodeByValue(self,value):
         # Checks if value is valid
         if type(value)!= int:
@@ -173,6 +178,7 @@ class LinkedList():
         return
 
     # Prints formatted list
+    # Complexity: O(n)
     def printList(self,node):
         # Initiate return string
         result=''
@@ -186,6 +192,7 @@ class LinkedList():
             return result
 
     # Finds parent node for specified node
+    # Complexity: Best O(1) Worst O(n)
     def findParent(self, findNode):
         # Loops through list
         temp=self.head
@@ -197,6 +204,7 @@ class LinkedList():
         return None
 
     # Reverses list
+    # Complexity: O(n)
     def reverse(self):
         # Holds previous value
         previousNode=None
@@ -223,7 +231,8 @@ class LinkedList():
         self.head=temp
 
     # Checks if list has a cycle
-    # Kind of a lazy way to detect a cycle, but it works!
+    # Kind of a lazy and inefficent way to detect a cycle, but it works!
+    # Complexity O(n) although it is dependent on the recursion limit and where the cycle is in the list.
     def hasCycle(self):
         # Since printList() is recursive a cycle will cause a max recursion level error
         try:
